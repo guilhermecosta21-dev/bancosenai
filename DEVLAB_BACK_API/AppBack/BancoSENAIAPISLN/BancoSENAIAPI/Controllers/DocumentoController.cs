@@ -54,5 +54,18 @@ namespace BancoSENAIAPI.Controllers
 
             return Ok(new { mensagem = "Documento anexado com sucesso", arquivoSalvo = novoNome });
         }
+
+        [HttpGet("listar/{codigoCliente}")]
+        public IActionResult ListarPorCliente(int codigoCliente)
+        {
+            var documentos = _documentosMetadados.Where(d => d.CodigoCliente == codigoCliente).ToList();
+
+            if (!documentos.Any())
+            {
+                return NotFound(new { mensagem = "Nenhum documento encontrado." });
+            }
+
+            return Ok(documentos);
+        }
     }
 }
