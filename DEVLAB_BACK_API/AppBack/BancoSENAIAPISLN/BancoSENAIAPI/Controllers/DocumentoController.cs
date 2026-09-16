@@ -29,6 +29,14 @@ namespace BancoSENAIAPI.Controllers
                 return BadRequest(new { mensagem = "Erro: O arquivo excede o limite de 2MB." });
             }
 
+            string extensaoDeArquivo = Path.GetExtension(arquivo.FileName).ToLowerInvariant();
+            string[] extensoesPermitidas = { ".pdf", ".jpg", ".png" };
+
+            if (!extensoesPermitidas.Contains(extensaoDeArquivo))
+            {
+                return BadRequest(new { mensagem = "Deu erro, o formato de arquivo está inválido. Apenas arquivos .pdf, .png e .jpg são permitidos" });
+            }
+
             string pastaCliente = Path.Combine(_caminhoRaiz, codigoCliente.ToString());
 
             if (!Directory.Exists(pastaCliente))
