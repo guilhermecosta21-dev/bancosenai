@@ -24,6 +24,11 @@ namespace BancoSENAIAPI.Controllers
                 return BadRequest("Nenhum arquivo foi enviado.");
             }
 
+            if(arquivo.Length > 2097152)
+            {
+                return BadRequest(new { mensagem = "Erro: O arquivo excede o limite de 2MB." });
+            }
+
             string pastaCliente = Path.Combine(_caminhoRaiz, codigoCliente.ToString());
 
             if (!Directory.Exists(pastaCliente))
