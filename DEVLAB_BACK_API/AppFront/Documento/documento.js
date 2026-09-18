@@ -19,9 +19,12 @@ async function enviarDocumento() {
     });
 
     if (response.ok) {
-        alert("Documento enviando com sucesso!");
+        alert("Documento enviado com sucesso!");
         document.getElementById("codigoCliente").value = "";
         document.getElementById("arquivo").value = "";
+
+        document.getElementById("codigoClienteBusca").value = codigoCliente;
+        await buscarDocumentos(); 
     }
     else {
         const erro = await response.json();
