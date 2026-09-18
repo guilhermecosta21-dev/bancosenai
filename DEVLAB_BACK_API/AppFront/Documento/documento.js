@@ -22,7 +22,8 @@ async function enviarDocumento() {
         alert("Documento enviando com sucesso!");
         document.getElementById("codigoCliente").value = "";
         document.getElementById("arquivo").value = "";
-    } else {
+    }
+    else {
         const erro = await response.json();
         alert("Erro: " + (erro.message || "Falha ao enviar o documento"));
     }
@@ -50,11 +51,13 @@ async function buscarDocumentos() {
                 <td>${doc.extensao}</td>
                 <td>
                     <button class="btn-baixar" onclick="baixarArquivo(${doc.id})">Baixar</button>
+                    <button class="btn-excluir" onclick="excluirArquivo(${doc.id})">Excluir</button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
-    } else {
+    }
+    else {
         alert("Nenhum documento encontrado para este cliente.");
     }
 }
@@ -77,12 +80,10 @@ async function baixarArquivo(id) {
 
                 if (matchUtf8) {
                     nomeArquivo = decodeURIComponent(matchUtf8[1].trim());
-                } else {
+                }
+                else if(matchNormal) {
                     const matchNormal = contentDisposition.match(/filename\s*=\s*"?([^";]+)"?/i);
-
-                    if (matchNormal) {
-                        nomeArquivo = matchNormal[1].trim();
-                    }
+                    nomeArquivo = matchNormal[1].trim();
                 }
             }
 
@@ -91,11 +92,30 @@ async function baixarArquivo(id) {
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
-        } else {
+        }
+        else {
             alert("Erro ao baixar o arquivo.");
         }
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Erro no download:", error);
         alert("Erro de conexão ao baixar o arquivo.");
+    }
+}
+
+async function excluirArquivo(id) {
+    if (!confirm("Tem certeza que deseja excluir este documento?"))
+        return;
+
+    const response = await fetch(`${URL_API}/excluir/${id}`, {
+        method: "DELETE"
+    });
+
+    if (response.ok) {
+        alert("Documento excluído com sucesso!");
+        await buscarDocumentos();
+    }
+    else {
+        alert("Erro ao excluir o documento.");
     }
 }
