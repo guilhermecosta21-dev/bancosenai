@@ -10,6 +10,7 @@ namespace BancoSENAIAPI.Controllers
 {
     [ApiController]
     [Route("api/1/[controller]")]
+    [Authorize]
     public class AuthController : Controller
     {
         private readonly AppDbContext _context;
