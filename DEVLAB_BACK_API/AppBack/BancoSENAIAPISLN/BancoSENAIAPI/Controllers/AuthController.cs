@@ -20,7 +20,8 @@ namespace BancoSENAIAPI.Controllers
             _context = context;
             _tokenService = tokenService;
         }
-
+        
+        [AllowAnonymous]
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar([FromBody] RegisterRequest dto)
         {
@@ -41,6 +42,7 @@ namespace BancoSENAIAPI.Controllers
             return Created("", new { usuario.Id, usuario.NomeUsuario });
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task <IActionResult> Login([FromBody] LoginRequestDto dto)
         {
